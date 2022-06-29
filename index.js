@@ -1,18 +1,50 @@
 const { loadPolicy } = require("@open-policy-agent/opa-wasm");
+const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
-const data = require("./opa/data.json")
-const policyWasm = fs.readFileSync("policy.wasm");
+const publicKey = fs.readFileSync("./public.pem");
+const policyWasm = fs.readFileSync("./opa/policy.wasm");
 
-exports.handler = async (event, context, callback) => {
-  const input = "";
+const data = require("./opa/data.json");
+
+exports.handler = async (event) => {
+  if (!event.headers.Authorization) {
+    return response(false);
+  }
+
+  const token = event.headers.Authorization.split(" ")[1];
+  const decoded = decode(token);
+
+  const input = {
+    url: event.rawPath,
+    client: decoded.aud,
+    role: decoded.role
+  };
 
   const policy = await loadPolicy(policyWasm);
   policy.setData(data);
 
-  const result = policy.evaluate(input);
+  const result = policy.evaluate(JSON.stringify(input));
 
-  return {
-    isAuthorized: result,
+  return response(result);
+};
+
+const decode = (token) => {
+  // TODO retrieve these options from env
+  const options = {
+    algorithms: [ "RS256" ],
+    issuer: "",
+    ignoreExpiration: false,
   };
+
+  try {
+    return jwt.verify(token, publicKey, options);
+  } catch (err) {
+    console.log(`Error decoding JWT: ${err}`);
+    return null;
+  }
+}
+
+const response = (isAuthorized) => {
+  return { isAuthorized };
 };
