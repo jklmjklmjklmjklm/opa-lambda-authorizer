@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/jklmjklmjklmjklm/opa-lambda-authorizer#readme",
   "dependencies": {
-    "@open-policy-agent/opa-wasm": "^1.7.0"
+    "@open-policy-agent/opa-wasm": "^1.7.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "jest": "^28.1.2"
