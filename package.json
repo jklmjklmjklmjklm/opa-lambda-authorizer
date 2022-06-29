@@ -1,0 +1,31 @@
+{
+  "name": "opa-lambda-authorizer",
+  "version": "1.0.0",
+  "description": "AWS API Gateway Lambda Authorizer w/ Open Policy Agent",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jklmjklmjklmjklm/opa-lambda-authorizer.git"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "authorizer",
+    "opa"
+  ],
+  "author": "jklmjklmjklmjklm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jklmjklmjklmjklm/opa-lambda-authorizer/issues"
+  },
+  "homepage": "https://github.com/jklmjklmjklmjklm/opa-lambda-authorizer#readme",
+  "dependencies": {
+    "@open-policy-agent/opa-wasm": "^1.7.0"
+  },
+  "devDependencies": {
+    "jest": "^28.1.2"
+  }
+}
