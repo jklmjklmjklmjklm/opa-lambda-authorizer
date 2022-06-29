@@ -1,0 +1,25 @@
+{
+  "clientA": {
+    "viewer": [
+      "GET /items",
+      "GET /items/*"
+    ],
+    "maker": [
+      "GET    /items",
+      "POST   /items",
+      "GET    /items/*",
+      "PUT    /items/*",
+      "DELETE /items/*"
+    ]
+  },
+  "clientB": {
+    "admin": "*",
+    "member": [
+      "GET    /books",
+      "POST   /books",
+      "GET    /books/*",
+      "PUT    /books/*",
+      "DELETE /books/*"
+    ]
+  }
+}
