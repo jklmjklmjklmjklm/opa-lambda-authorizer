@@ -57,6 +57,24 @@ describe(".handler", () => {
     expect(typeof index.handler).toBe("function");
   });
 
+  test("should return isAuthorized=false when Authorization header is not present", async () => {
+    const response = await index.handler({ headers: {} });
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(false);
+  });
+
+  test("should return isAuthorized=false when Authorization header is not of valid format", async () => {
+    const response = await index.handler({ headers: { Authorization: "random" } });
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(false);
+  });
+
+  test("should return isAuthorized=false when Authorization header is not of Bearer scheme", async () => {
+    const response = await index.handler({ headers: { Authorization: "Basic token" } });
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(false);
+  });
+
   test.todo("should return response payload of 2.0 format");
   test.todo("should return isAuthorized=false when denied");
   test.todo("should return isAuthorized=true when allowed");

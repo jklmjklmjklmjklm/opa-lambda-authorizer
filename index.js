@@ -12,7 +12,17 @@ exports.handler = async (event) => {
     return response(false);
   }
 
-  const token = event.headers.Authorization.split(" ")[1];
+  const authorization = event.headers["Authorization"].split(" ");
+  if (authorization.length != 2) {
+    return response(false);
+  }
+
+  const scheme = authorization[0];
+  if (scheme != "Bearer") {
+    return response(false);
+  }
+
+  const token = authorization[1];
   const decoded = decode(token);
 
   const input = {
