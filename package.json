@@ -2,7 +2,7 @@
   "name": "opa-lambda-authorizer",
   "version": "1.0.0",
   "description": "AWS API Gateway Lambda Authorizer w/ Open Policy Agent",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },

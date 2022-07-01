@@ -2,7 +2,7 @@ const { loadPolicy } = require("@open-policy-agent/opa-wasm");
 const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
-const policyWasm = fs.readFileSync("./opa/policy.wasm");
+const policyWasm = fs.readFileSync(__dirname + "/opa/policy.wasm");
 
 const data = require("./opa/data.json");
 
@@ -39,7 +39,6 @@ exports.handler = async (event) => {
 };
 
 const decode = (token) => {
-  // TODO retrieve these options from env
   const options = {
     algorithms: process.env.JWT_ALGORITHM.split(","),
     issuer: process.env.JWT_ISSUER,

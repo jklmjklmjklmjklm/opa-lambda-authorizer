@@ -1,4 +1,4 @@
-const index = require("./index");
+const index = require("../index");
 
 const event = {
   "version": "2.0",
@@ -52,6 +52,13 @@ const event = {
 };
 
 describe(".handler", () => {
+  beforeEach(() => {
+    process.env.JWT_ISSUER            = "auth.example.com";
+    process.env.JWT_ALGORITHM         = "RS256";
+    process.env.JWT_IGNORE_EXPIRATION = "true";
+    process.env.PUBLIC_KEY            = ""
+  });
+
   test("should be a function", () => {
     expect(index).toHaveProperty("handler");
     expect(typeof index.handler).toBe("function");
