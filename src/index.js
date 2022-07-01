@@ -23,6 +23,9 @@ exports.handler = async (event) => {
 
   const token = authorization[1];
   const decoded = decode(token);
+  if (!decoded) {
+    return response(false);
+  }
 
   const input = {
     url: event.rawPath,
@@ -39,17 +42,17 @@ exports.handler = async (event) => {
 };
 
 const decode = (token) => {
-  const options = {
-    algorithms: process.env.JWT_ALGORITHM.split(","),
-    issuer: process.env.JWT_ISSUER,
-    ignoreExpiration: process.env.JWT_IGNORE_EXPIRATION,
-  };
-
   try {
+    const options = {
+      algorithms: process.env.JWT_ALGORITHM.split(","),
+      issuer: process.env.JWT_ISSUER,
+      ignoreExpiration: ("true" === process.env.JWT_IGNORE_EXPIRATION),
+    };
+
     const publicKey = process.env.PUBLIC_KEY.replace(/\\n/g, '\n');
     return jwt.verify(token, publicKey, options);
   } catch (err) {
-    console.log(`Error decoding JWT: ${err}`);
+    console.log(`Error decoding JWT :: ${err.message}`);
     return null;
   }
 }
