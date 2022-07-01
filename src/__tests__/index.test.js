@@ -1,5 +1,6 @@
 const index = require("../index");
 
+const jwtFixtures = require("../__fixtures__/jwt");
 const event = {
   "version": "2.0",
   "type": "REQUEST",
@@ -53,10 +54,11 @@ const event = {
 
 describe(".handler", () => {
   beforeEach(() => {
-    process.env.JWT_ISSUER            = "auth.example.com";
-    process.env.JWT_ALGORITHM         = "RS256";
-    process.env.JWT_IGNORE_EXPIRATION = "true";
-    process.env.PUBLIC_KEY            = ""
+    process.env.JWT_ISSUER            = jwtFixtures.signOptions.issuer;
+    process.env.JWT_ALGORITHM         = jwtFixtures.signOptions.algorithm;
+    process.env.JWT_IGNORE_EXPIRATION = "false";
+
+    process.env.PUBLIC_KEY = jwtFixtures.publicKey;
   });
 
   test("should be a function", () => {
