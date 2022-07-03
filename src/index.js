@@ -2,7 +2,7 @@ const { loadPolicy } = require("@open-policy-agent/opa-wasm");
 const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
-const policyWasm = fs.readFileSync(__dirname + "/opa/policy.wasm");
+const policyWasm = fs.readFileSync(__dirname + "/../bin/policy.wasm");
 
 const data = require("./opa/data.json");
 
