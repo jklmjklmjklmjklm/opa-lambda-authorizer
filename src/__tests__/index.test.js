@@ -140,7 +140,15 @@ describe(".handler", () => {
     expect(console.log).toHaveBeenCalledWith("Error decoding JWT :: jwt expired");
   });
 
-  test.todo("should return isAuthorized=false when public key is invalid");
+  test("should return isAuthorized=false when public key is invalid", async () => {
+    const token = createToken({ role: "admin" }, jwtFixtures.signOptions);
+    process.env.PUBLIC_KEY = "Some random public key";
+
+    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(false);
+    expect(console.log).toHaveBeenCalledWith(`Error decoding JWT :: error:0909006C:PEM routines:get_name:no start line`);
+  });
 
   // ===== Payload ===== //
 
