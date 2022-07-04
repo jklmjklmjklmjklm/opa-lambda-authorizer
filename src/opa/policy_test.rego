@@ -70,4 +70,9 @@ test_unknown_client {
         with input as { "client": "clientC", "role": "approver", "url": "GET /items" }
         with data.clients as clients
 }
+
+test_allow_wildcard {
+    allow
+        with input as { "client": "clientB", "role": "admin", "url": "GET /items" }
+        with data.clients as clients
 }

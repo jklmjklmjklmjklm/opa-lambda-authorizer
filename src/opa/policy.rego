@@ -9,5 +9,13 @@ allow {
     c.name == input.client
     some r in c.roles
     r.name == input.role
-    input.url in r.actions
+    allow_action(input.url, r.actions)
+}
+
+allow_action(url, actions) {
+    actions == "*"
+}
+
+allow_action(url, actions) {
+    url in actions
 }
