@@ -13,10 +13,10 @@
         {
           "name": "maker",
           "actions": [
-            "GET    /items",
-            "POST   /items",
-            "GET    /items/*",
-            "PUT    /items/*",
+            "GET /items",
+            "POST /items",
+            "GET /items/*",
+            "PUT /items/*",
             "DELETE /items/*"
           ]
         }
@@ -32,10 +32,10 @@
         {
           "name": "member",
           "actions": [
-            "GET    /books",
-            "POST   /books",
-            "GET    /books/*",
-            "PUT    /books/*",
+            "GET /books",
+            "POST /books",
+            "GET /books/*",
+            "PUT /books/*",
             "DELETE /books/*"
           ]
         }

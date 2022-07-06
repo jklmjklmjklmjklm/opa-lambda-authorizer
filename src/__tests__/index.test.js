@@ -1,4 +1,3 @@
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
 const index = require("../index");
@@ -116,7 +115,7 @@ describe(".handler", () => {
     const options = jwtFixtures.signOptions;
     options.issuer = "auth.other.com";
 
-    const token = createToken({ role: "admin" }, options);
+    const token = createToken({ role: "viewer" }, options);
 
     const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
     expect(response).toHaveProperty("isAuthorized");
@@ -129,7 +128,7 @@ describe(".handler", () => {
     options.expiresIn = "30m";
 
     const payload = {
-      role: "admin",
+      role: "viewer",
       iat: Math.floor(Date.now() / 1000) - (60 * 60) // backdate 1h
     }
     const token = createToken(payload, options);
@@ -141,7 +140,7 @@ describe(".handler", () => {
   });
 
   test("should return isAuthorized=false when public key is invalid", async () => {
-    const token = createToken({ role: "admin" }, jwtFixtures.signOptions);
+    const token = createToken({ role: "viewer" }, jwtFixtures.signOptions);
     process.env.PUBLIC_KEY = "Some random public key";
 
     const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });

@@ -70,7 +70,7 @@ FnpgWTLUFuQDbyrXQOZpCj8CAwEAAQ==
 exports.signOptions = {
   algorithm: "RS256",
   expiresIn: "1h",
-  audience: "test application",
+  audience: "clientA",
   issuer: "auth.example.com",
   subject: "175ed715-89c3-4bd8-8001-1001c1cc80ce"
 };
