@@ -1,10 +1,13 @@
+const opaWasm = require("@open-policy-agent/opa-wasm");
 const jwt = require("jsonwebtoken");
 
 const index = require("../index");
+const data  = require("../opa/data.json");
 
 const jwtFixtures = require("../__fixtures__/jwt");
 
 jest.spyOn(console, "log");
+jest.mock("@open-policy-agent/opa-wasm");
 
 describe(".handler", () => {
   beforeEach(() => {
@@ -96,6 +99,27 @@ describe(".handler", () => {
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
     expect(console.log).toHaveBeenCalledWith(`Error decoding JWT :: error:0909006C:PEM routines:get_name:no start line`);
+  });
+
+  // ===== OPA ===== //
+  test("should provide the correct inputs to OPA", async () => {
+    const setDataMock = jest.fn();
+    const evaluateMock = jest.fn(() => { return true; });
+    opaWasm.loadPolicy.mockResolvedValue({
+      setData: setDataMock,
+      evaluate: evaluateMock
+    });
+
+    const token = createToken({ role: "viewer" }, jwtFixtures.signOptions);
+
+    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(true);
+    expect(setDataMock).toHaveBeenCalledWith(data);
+    expect(evaluateMock).toHaveBeenCalledWith(JSON.stringify({
+      client: "clientA",
+      role: "viewer"
+    }));
   });
 
   // ===== Payload ===== //

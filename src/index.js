@@ -37,6 +37,7 @@ exports.handler = async (event) => {
   policy.setData(data);
 
   const result = policy.evaluate(JSON.stringify(input));
+  console.log(result);
 
   return response(result);
 };
