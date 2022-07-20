@@ -36,10 +36,8 @@ exports.handler = async (event) => {
   const policy = await loadPolicy(policyWasm);
   policy.setData(data);
 
-  const result = policy.evaluate(JSON.stringify(input));
-  console.log(result);
-
-  return response(result);
+  const resultSet = policy.evaluate(JSON.stringify(input));
+  return response(resultSet[0].result);
 };
 
 const decode = (token) => {

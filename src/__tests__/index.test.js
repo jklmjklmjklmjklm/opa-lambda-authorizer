@@ -126,7 +126,7 @@ describe(".handler", () => {
   // ===== OPA ===== //
   test("should provide the correct inputs to OPA", async () => {
     const setDataMock = jest.fn();
-    const evaluateMock = jest.fn(() => { return true; });
+    const evaluateMock = jest.fn(() => { return [ { result: true } ]; });
     opaWasm.loadPolicy.mockResolvedValue({
       setData: setDataMock,
       evaluate: evaluateMock
