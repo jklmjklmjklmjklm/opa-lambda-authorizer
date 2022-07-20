@@ -5,6 +5,7 @@ const index = require("../index");
 const data  = require("../opa/data.json");
 
 const jwtFixtures = require("../__fixtures__/jwt");
+const lambdaFixtures = require("../__fixtures__/lambda");
 
 jest.spyOn(console, "log");
 jest.mock("@open-policy-agent/opa-wasm");
@@ -30,19 +31,28 @@ describe(".handler", () => {
   // ===== Authorization header ===== //
 
   test("should return isAuthorized=false when Authorization header is not present", async () => {
-    const response = await index.handler({ headers: {} });
+    const payload = lambdaFixtures.event;
+    delete payload.headers["Authorization"]
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
   });
 
   test("should return isAuthorized=false when Authorization header is not of valid format", async () => {
-    const response = await index.handler({ headers: { Authorization: "random" } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = "random";
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
   });
 
   test("should return isAuthorized=false when Authorization header is not of Bearer scheme", async () => {
-    const response = await index.handler({ headers: { Authorization: "Basic token" } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = "Basic token";
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
   });
@@ -54,7 +64,10 @@ describe(".handler", () => {
     const verifyMock = jest.spyOn(jwt, "verify");
     verifyMock.mockImplementation(() => { throw new Error(error); });
 
-    const response = await index.handler({ headers: { Authorization: "Bearer token" } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = "Bearer token";
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
     expect(console.log).toHaveBeenCalledWith(`Error decoding JWT :: ${error}`);
@@ -69,7 +82,10 @@ describe(".handler", () => {
 
     const token = createToken({ role: "viewer" }, options);
 
-    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
     expect(console.log).toHaveBeenCalledWith(`Error decoding JWT :: jwt issuer invalid. expected: ${process.env.JWT_ISSUER}`);
@@ -79,13 +95,16 @@ describe(".handler", () => {
     const options = jwtFixtures.signOptions;
     options.expiresIn = "30m";
 
-    const payload = {
+    const tokenPayload = {
       role: "viewer",
       iat: Math.floor(Date.now() / 1000) - (60 * 60) // backdate 1h
     }
-    const token = createToken(payload, options);
+    const token = createToken(tokenPayload, options);
 
-    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
     expect(console.log).toHaveBeenCalledWith("Error decoding JWT :: jwt expired");
@@ -95,7 +114,10 @@ describe(".handler", () => {
     const token = createToken({ role: "viewer" }, jwtFixtures.signOptions);
     process.env.PUBLIC_KEY = "Some random public key";
 
-    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(false);
     expect(console.log).toHaveBeenCalledWith(`Error decoding JWT :: error:0909006C:PEM routines:get_name:no start line`);
@@ -112,11 +134,15 @@ describe(".handler", () => {
 
     const token = createToken({ role: "viewer" }, jwtFixtures.signOptions);
 
-    const response = await index.handler({ headers: { Authorization: `Bearer ${token}` } });
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await index.handler(payload);
     expect(response).toHaveProperty("isAuthorized");
     expect(response.isAuthorized).toBe(true);
     expect(setDataMock).toHaveBeenCalledWith(data);
     expect(evaluateMock).toHaveBeenCalledWith(JSON.stringify({
+      url: "/items",
       client: "clientA",
       role: "viewer"
     }));

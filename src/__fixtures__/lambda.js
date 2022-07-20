@@ -1,15 +1,20 @@
 exports.event = {
   "version": "2.0",
   "type": "REQUEST",
-  "routeArn": "arn:aws:execute-api:us-east-1:123456789012:abcdef123/test/GET/request",
-  "identitySource": ["user1", "123"],
+  "routeArn": "arn:aws:execute-api:us-east-1:123456789012:abcdef123/test/GET/items",
+  "identitySource": [
+    "root",
+    "user"
+  ],
   "routeKey": "$default",
-  "rawPath": "/my/path",
+  "rawPath": "/items",
   "rawQueryString": "parameter1=value1&parameter1=value2&parameter2=value",
-  "cookies": ["cookie1", "cookie2"],
+  "cookies": [
+    "cookie1",
+    "cookie2"
+  ],
   "headers": {
-    "Header1": "value1",
-    "Header2": "value2"
+    "Authorization": "Bearer token"
   },
   "queryStringParameters": {
     "parameter1": "value1,value2",
@@ -17,7 +22,7 @@ exports.event = {
   },
   "requestContext": {
     "accountId": "123456789012",
-    "apiId": "api-id",
+    "apiId": "abcdef123",
     "authentication": {
       "clientCert": {
         "clientCertPem": "CERT_CONTENT",
@@ -30,21 +35,26 @@ exports.event = {
         }
       }
     },
-    "domainName": "id.execute-api.us-east-1.amazonaws.com",
-    "domainPrefix": "id",
+    "domainName": "abcdef123.execute-api.us-east-1.amazonaws.com",
+    "domainPrefix": "abcdef123",
     "http": {
       "method": "POST",
-      "path": "/my/path",
+      "path": "/items",
       "protocol": "HTTP/1.1",
-      "sourceIp": "IP",
-      "userAgent": "agent"
+      "sourceIp": "1.1.1.1",
+      "userAgent": "Mozilla Firefox"
     },
-    "requestId": "id",
+    "requestId": "75e9569d-f193-477b-9134-ca950428446d",
     "routeKey": "$default",
-    "stage": "$default",
+    "stage": "test",
     "time": "12/Mar/2020:19:03:58 +0000",
     "timeEpoch": 1583348638390
   },
-  "pathParameters": { "parameter1": "value1" },
-  "stageVariables": { "stageVariable1": "value1", "stageVariable2": "value2" }
+  "pathParameters": {
+    "parameter1": "value1"
+  },
+  "stageVariables": {
+    "stageVariable1": "value1",
+    "stageVariable2": "value2"
+  }
 };
