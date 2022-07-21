@@ -38,7 +38,7 @@ exports.event = {
     "domainName": "abcdef123.execute-api.us-east-1.amazonaws.com",
     "domainPrefix": "abcdef123",
     "http": {
-      "method": "POST",
+      "method": "GET",
       "path": "/items",
       "protocol": "HTTP/1.1",
       "sourceIp": "1.1.1.1",

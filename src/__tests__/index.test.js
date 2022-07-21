@@ -142,17 +142,65 @@ describe(".handler", () => {
     expect(response.isAuthorized).toBe(true);
     expect(setDataMock).toHaveBeenCalledWith(data);
     expect(evaluateMock).toHaveBeenCalledWith(JSON.stringify({
-      url: "/items",
+      url: "GET /items",
       client: "clientA",
       role: "viewer"
     }));
+
+    // for some reason jest.clearAllMocks() does not work on local mocks
+    setDataMock.mockRestore();
+    evaluateMock.mockRestore();
   });
 
   // ===== Payload ===== //
 
-  test.todo("should return response payload of 2.0 format");
-  test.todo("should return isAuthorized=false when denied");
-  test.todo("should return isAuthorized=true when allowed");
+  test("should return isAuthorized=false when denied", async () => {
+    const setDataMock = jest.fn();
+    const evaluateMock = jest.fn(() => { return [ { result: false } ]; });
+    opaWasm.loadPolicy.mockResolvedValue({
+      setData: setDataMock,
+      evaluate: evaluateMock
+    });
+
+    const token = createToken({ role: "viewer" }, jwtFixtures.signOptions);
+
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+    payload.requestContext.http.method = "POST";
+    payload.requestContext.http.path   = "/items";
+
+    const response = await index.handler(payload);
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(false);
+
+    // for some reason jest.clearAllMocks() does not work on local mocks
+    setDataMock.mockRestore();
+    evaluateMock.mockRestore();
+  });
+
+  test("should return isAuthorized=true when allowed", async () => {
+    const setDataMock = jest.fn();
+    const evaluateMock = jest.fn(() => { return [ { result: true } ]; });
+    opaWasm.loadPolicy.mockResolvedValue({
+      setData: setDataMock,
+      evaluate: evaluateMock
+    });
+
+    const token = createToken({ role: "maker" }, jwtFixtures.signOptions);
+
+    const payload = lambdaFixtures.event;
+    payload.headers["Authorization"] = `Bearer ${token}`;
+    payload.requestContext.http.method = "POST";
+    payload.requestContext.http.path   = "/items";
+
+    const response = await index.handler(payload);
+    expect(response).toHaveProperty("isAuthorized");
+    expect(response.isAuthorized).toBe(true);
+
+    // for some reason jest.clearAllMocks() does not work on local mocks
+    setDataMock.mockRestore();
+    evaluateMock.mockRestore();
+  });
 });
 
 const createToken = (payload, options) => {

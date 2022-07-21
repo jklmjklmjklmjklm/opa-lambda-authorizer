@@ -28,7 +28,7 @@ exports.handler = async (event) => {
   }
 
   const input = {
-    url: event.rawPath,
+    url: event.requestContext.http.method + " " + event.requestContext.http.path,
     client: decoded.aud,
     role: decoded.role
   };
