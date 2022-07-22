@@ -9,13 +9,13 @@ allow {
     c.name == input.client
     some r in c.roles
     r.name == input.role
-    allow_action(input.url, r.actions)
+    is_allowed(input.url, r.urls)
 }
 
-allow_action(url, actions) {
-    actions == "*"
+is_allowed(url, urls) {
+    urls == "*"
 }
 
-allow_action(url, actions) {
-    url in actions
+is_allowed(url, urls) {
+    url in urls
 }

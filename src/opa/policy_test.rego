@@ -6,11 +6,11 @@ clients := [
         "roles": [
             {
                 "name": "viewer",
-                "actions": [ "GET /items", "GET /items/*" ]
+                "urls": [ "GET /items", "GET /items/*" ]
             },
             {
                 "name": "maker",
-                "actions": [ "GET /items", "POST /items", "GET /items/*", "PUT /items/*", "DELETE /items/*" ]
+                "urls": [ "GET /items", "POST /items", "GET /items/*", "PUT /items/*", "DELETE /items/*" ]
             }
         ]
    },
@@ -19,11 +19,11 @@ clients := [
         "roles": [
             {
                 "name": "admin",
-                "actions": "*"
+                "urls": "*"
             },
             {
                 "name": "member",
-                "actions": [ "GET /books", "POST /books", "GET /books/*", "PUT /books/*", "DELETE /books/*" ]
+                "urls": [ "GET /books", "POST /books", "GET /books/*", "PUT /books/*", "DELETE /books/*" ]
             }
         ]
    }
@@ -43,8 +43,8 @@ test_role_not_allowed_to_access_url {
 
 test_unknown_url {
     not allow
-            with input as { "client": "clientA", "role": "viewer", "url": "GET /pets" }
-            with data.clients as clients
+        with input as { "client": "clientA", "role": "viewer", "url": "GET /pets" }
+        with data.clients as clients
 }
 
 test_url_mismatch {

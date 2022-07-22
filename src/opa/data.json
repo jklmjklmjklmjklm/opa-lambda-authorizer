@@ -5,14 +5,14 @@
       "roles": [
         {
           "name": "viewer",
-          "actions": [
+          "urls": [
             "GET /items",
             "GET /items/*"
           ]
         },
         {
           "name": "maker",
-          "actions": [
+          "urls": [
             "GET /items",
             "POST /items",
             "GET /items/*",
@@ -27,11 +27,11 @@
       "roles": [
         {
           "name": "admin",
-          "actions": "*"
+          "urls": "*"
         },
         {
           "name": "member",
-          "actions": [
+          "urls": [
             "GET /books",
             "POST /books",
             "GET /books/*",
