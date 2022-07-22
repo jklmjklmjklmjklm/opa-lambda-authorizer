@@ -76,3 +76,9 @@ test_allow_wildcard {
         with input as { "client": "clientB", "role": "admin", "url": "GET /items" }
         with data.clients as clients
 }
+
+test_allow_glob {
+    allow
+        with input as { "client": "clientA", "role": "maker", "url": "PUT /items/123" }
+        with data.clients as clients
+}
