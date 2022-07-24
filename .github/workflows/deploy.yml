@@ -1,0 +1,14 @@
+name: deploy
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: open-policy-agent/setup-opa@v1
+        with:
+          version: latest
+  coverage:
+    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
