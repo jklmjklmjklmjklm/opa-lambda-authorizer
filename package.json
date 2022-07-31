@@ -4,10 +4,12 @@
   "description": "AWS API Gateway Lambda Authorizer w/ Open Policy Agent",
   "main": "src/index.js",
   "scripts": {
-    "test-lambda": "jest",
+    "test-lambda": "jest --coverage",
     "test-opa": "cd src/opa && opa test . -v",
     "test": "npm run test-lambda && npm run test-opa",
-    "build-policy": "opa build -t wasm -e opa/allow src/opa/policy.rego"
+    "build-policy": "opa build -t wasm -e opa/allow src/opa/policy.rego && tar -xvf bundle.tar.gz -C bin",
+    "build-lambda": "zip bin/app.zip -r src node_modules bin -x \"src/__fixtures__/*\" -x \"src/__tests__/*\" -x \"src/opa/*.rego\"",
+    "build": "npm run build-policy && npm run build-lambda"
   },
   "repository": {
     "type": "git",
