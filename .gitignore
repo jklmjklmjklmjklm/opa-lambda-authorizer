@@ -109,3 +109,7 @@ opa-lambda-authorizer.iml
 
 # Compiled binaries
 bin/policy.wasm
+bin/app.zip
+bundle.tar.gz
+
+.DS_Store
