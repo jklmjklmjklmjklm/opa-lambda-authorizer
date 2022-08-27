@@ -19,6 +19,9 @@ jobs:
       - run: npm test
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: open-policy-agent/setup-opa@v1
