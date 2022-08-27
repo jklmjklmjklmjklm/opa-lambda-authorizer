@@ -29,3 +29,13 @@ jobs:
           node-version: 16.x
       - run: npm i --production
       - run: npm run build
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-southeast-1
+          role-to-assume: arn:aws:iam::525155335568:role/GitHubOIDCRole
+          role-session-name: OPALambdaAuthorizerGitHubWorkflow
+      - run: aws lambda update-function-configuration --cli-input-json "file://lambda.json"
+      - run: aws lambda wait function-updated --function-name opa-lambda-authorizer
+      - run: aws lambda update-function-code --function-name opa-lambda-authorizer --zip-file fileb://bin/app.zip
+      - run: aws lambda wait function-updated --function-name opa-lambda-authorizer
+      - run: aws lambda publish-version --function-name opa-lambda-authorizer --description ${{ github.ref_name }}

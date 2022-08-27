@@ -1,0 +1,16 @@
+{
+  "FunctionName": "opa-lambda-authorizer",
+  "Role": "arn:aws:iam::525155335568:role/service-role/opa-lambda-authorizer-role-fpe9k5nv",
+  "Handler": "src/index.handler",
+  "Timeout": 3,
+  "MemorySize": 128,
+  "Environment": {
+    "Variables": {
+      "JWT_ISSUER": "https://auth.example.com",
+      "JWT_ALGORITHM": "RS256",
+      "JWT_IGNORE_EXPIRATION": "false",
+      "PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtVyw6gnNliozn2JcxAII5ju5dIV8iNW70p71CoGb0X73wVig2zc/CVgL11lxsivzGni4t+OgBuSl33HCzexE/VIb2YjW8QaWo2lI4pFoqE4JmiZ2z0MZWRiOWlZ/B+Q0E+t13uS6Vib941avUWzL1dxcONBbbn36OYVmB/6H+xTpXXySL6wjySk/M4x+kQ1tp5dyAUCBkHznTIG3DEkgoxx5qTcyc3FMmZMzvfmdG0ZlnwpZfTsP9Hp9cfil50fc8zf4/noPLH/TV5jhHJ5lk6NbaZ68uh6zaLn5y7rg5RzG7hdC4nKbi6cM6jMaro+zM3TxwMwkoU9yCAv5urHslE5WE+BrFbfP7l2tK3WuFdyd6P4O1JpcBYVVbUA9iO/ebNJQ/F4mPHgd4cbhADLTZJ4lTJ5OmCXZXMpThYmuJrM9GDTD+gx8ajqBKwMQicxpOEpbeJuBcAKPq0g6fXZy9bAfVnErznPTvzG1AoWkKBVRU/kIV6tnLfIfs+YhrqicWUIvgZHhKlXDWtkWHrCLfu1i/Nj9BMp+feKvO9+Zz1IxmhNL5Vezi9Dw0CP+s/ZJPB0YXzM5rwc3baYf3CuZ0BLk+WM1BEPf//xvnSe2D2lc4oWLm1ffQe2Vf5NwP2/g3FFD+YAyDtxkB1uyZx2LFnpgWTLUFuQDbyrXQOZpCj8CAwEAAQ==\n-----END PUBLIC KEY-----\n"
+    }
+  },
+  "Runtime": "nodejs16.x"
+}
