@@ -353,6 +353,7 @@
         "x-amazon-apigateway-authorizer" : {
           "type": "request",
           "identitySource": "method.request.header.Authorization",
+          "authorizerCredentials": "arn:aws:iam::525155335568:role/ApiGatewayAssumableRole",
           "authorizerUri": "arn:aws:apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-1:525155335568:function:opa-lambda-authorizer/invocations",
           "authorizerResultTtlInSeconds": 300
         }
