@@ -17,8 +17,8 @@ is_allowed(url, urls) {
 }
 
 is_allowed(url, urls) {
-	some u in urls
-	glob.match(u, [ "/" ], url)
+    some u in urls
+    glob.match(u, [ "/" ], url)
 }
 
 is_allowed(url, urls) {
